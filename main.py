@@ -125,8 +125,8 @@ while run:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                              
-                # UI element---------------------------------
-
+                
+                # J'affcihe le scoreboard en classant les scores du plus grands au plus petit.
                 is_score_print = False
                 if not is_score_print:
                     with open("scores.json", 'r') as f:
@@ -146,7 +146,7 @@ while run:
                         page_menu.blit(text, (550, y_pos))
                         y_pos += 25
                     is_score_print = True
-
+                # Je détermine quel checkbox afficher 
                 if (checkbox_x_easy < mouse_pos[0] < checkbox_x_easy + checked_image_easy.get_width() and
                         checkbox_y_easy < mouse_pos[1] < checkbox_y_easy + checked_image_easy.get_height()):
                     is_checked_easy = True
@@ -175,8 +175,7 @@ while run:
                     is_checked_easy = False
                     is_checked_custom = True
                     
-                
-
+                # J'affiche les images correspondantes des checkbox définis au dessus
                 if is_checked_easy:
                     page_menu.blit(checked_image_easy, (checkbox_x_easy, checkbox_y_easy))
                 else:
@@ -205,7 +204,7 @@ while run:
                         current_screen = page_setlist
                     else:
                         current_screen = page_game
-
+                # J'affiche le reste de l'UI
                 page_menu.blit(title, title_pos)
                 page_menu.blit(text_lvl_easy, (100, 87))
                 page_menu.blit(text_lvl_normal, (100, 147))
@@ -215,8 +214,8 @@ while run:
                 # Affichage
                 screen.blit(page_menu, (0, 0))
                 pygame.display.flip()
-    if current_screen == page_setlist:
-        if not set_variable:
+    if current_screen == page_setlist: # Page qui permet d'ajouter une liste de mot custom
+        if not set_variable: # je set mes variables
             list_char_title = []
             list_char_word = []
             list_words = []
@@ -245,10 +244,10 @@ while run:
 
             if event.type == KEYDOWN and event.key == K_BACKSPACE:
                 if is_title: # del le dernier char de la liste current_mot
-                    list_char_word.pop()
+                    list_char_word = list_char_word[:-1]
 
                 if not is_title: # del le dernier élément de la liste titre
-                    list_char_title.pop()
+                    list_char_title = list_char_title[:-1]
 
             if event.type == MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
@@ -268,7 +267,7 @@ while run:
         page_setlist.blit(instruc_text, (150, 90))
         page_setlist.blit(instruc_text_2, (140, 120))
 
-        # Variable elements
+        # Elements variables de l'affichage
         pre_titre_aff = font_little.render("Your title: ", True, grey)
         titre_aff_txt = "".join(list_char_title)
         titre_aff = font_little.render(titre_aff_txt, True, grey)
@@ -283,7 +282,7 @@ while run:
 
         screen.blit(page_setlist, (0, 0))
         pygame.display.flip()
-    if current_screen == page_game:
+    if current_screen == page_game: # Page de jeu
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -293,8 +292,6 @@ while run:
             # UI element---------------------------------
             page_game.blit(title, title_pos)
 
-            
-            
             if is_checked_play:
                 # je sélectionne un mot selon la difficulté
                 if is_checked_easy:
@@ -316,7 +313,7 @@ while run:
                 win = 0
                 not_founded_char = [char for char in mot]
                 
-                while game_run:
+                while game_run: # L'algo de recherche du mot
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT:
                             game_run = False
@@ -334,8 +331,7 @@ while run:
                                     if chr(event.key) == i:
                                         founded_char[not_founded_char.index(chr(event.key))] = chr(event.key)
                                         not_founded_char[not_founded_char.index(chr(event.key))] = "_"
-                                        print(founded_char)
-                                        print('nfc', not_founded_char)
+                      
                                         
                             elif chr(event.key) not in wrong_char:
                                 wrong_char.append(chr(event.key))
@@ -360,6 +356,7 @@ while run:
                         found_char_affichage = " ".join(founded_char)
                         text_affichage = font.render(found_char_affichage, True, black)
                         page_game.blit(text_affichage, (120, 150))
+                        # J'affiche les différentes photos du pendus en fonction du nombre de vies restantes
                         hangman_pos = (550, 170)
                         if lives == 6:
                             hangman_6 = pygame.image.load("images\hangman_6.png")
@@ -386,12 +383,12 @@ while run:
                             current_screen = page_end
                             page_end.fill(beige)
                             game_run = False
-                        # Affichage
+                        # Update de l'affichage
                         screen.blit(page_game, (0, 0))
                         pygame.display.flip()
                         
 
-    if current_screen == page_end:
+    if current_screen == page_end: # Page de fin
         for event in pygame.event.get():
             if event.type == pygame.QUIT:        
                 run = False
@@ -406,7 +403,7 @@ while run:
         # UI-----------------------------------------
         if count == 1:
             sorted_scores = dict(sorted(scores.items(), key=itemgetter(1), reverse=True))
-            y_pos = 150
+            y_pos = 150 
             sorted_scores_str = []
             for key, value in sorted_scores.items():
                 element = " ".join((str(key), ":", str(value)))
@@ -455,14 +452,14 @@ while run:
             # Affichage
             screen.blit(page_end, (0, 0))
             pygame.display.flip()
-
+        # Je définis le nom du joueur qui viens de finir sa partie
         input_name = []
         input_name_aff = []
         with open('scores.json', 'r') as f:
             scores = json.load(f)
         running = True
         
-        if count == 0:
+        if count == 0: # Je limite les name input à un seul 
             while running:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
@@ -473,7 +470,7 @@ while run:
                         if (main_button_x < mouse_pos[0] < main_button_x + back_main_button.get_width() and
                             main_button_y < mouse_pos[1] < main_button_y + back_main_button.get_height()):
                             running = False
-                            current_screen = page_menu
+                            current_screen = page_menu # bouton retour au menu
                             
                     if event.type == KEYDOWN and event.key in range(96, 123) or event.type == KEYDOWN and event.key == K_RETURN:
                         if event.key == K_RETURN and win != 0:
@@ -494,14 +491,14 @@ while run:
                                 scores[input_name_aff] = 0
                                 count += 1        
                                 with open('scores.json', 'w') as f:
-                                        json.dump(scores, f)
+                                    json.dump(scores, f)
                                 running = False
+                        
+                        # UI
                         input_name.append(chr(event.key))
                         input_name_aff = "".join(input_name)
                         name = font_little.render(input_name_aff, True, grey)
                         page_end.blit(name, (260, 230))
-
-
                         screen.blit(page_end, (0, 0))
                         pygame.display.update()
 
