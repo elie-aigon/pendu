@@ -1,7 +1,7 @@
 from Settings import *
 
 class CHECKBOX:
-    def __init__(self, surface, font , color,pos_x, pos_y, width, height, text, background):
+    def __init__(self, surface, font , color,pos_x, pos_y, width, height, text, background, command):
         self.x = pos_x
         self.y = pos_y
         self.width = width
@@ -16,7 +16,7 @@ class CHECKBOX:
         self.background = pygame.transform.scale(self.background, (width, height))
         self.background_unchecked = pygame.image.load("Data/images/checked_box.png")
         self.background_unchecked = pygame.transform.scale(self.background_unchecked, (width, height))
-
+        self.command = command
 
     def draw_button(self, state):
         if state:
@@ -27,11 +27,5 @@ class CHECKBOX:
     
     def is_clicked(self, state, pos):
         if self.button_rect.collidepoint(pos):
-            if state:
-                state = False
-                return state
-            else:
-                state = True
-                return state
-                
+            self.command()
             

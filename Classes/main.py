@@ -19,9 +19,10 @@ class MAIN():
         self.normal = False
         self.hard = False
 
-        self.checked_box_easy = CHECKBOX(self.screen, font_mid, white, 80, 300, 100, 90, "EASY", "Data/images/unchecked_box.png")
-        self.checked_box_normal = CHECKBOX(self.screen, font_mid, white, 80, 420, 100, 90, "Normal", "Data/images/unchecked_box.png")
-        self.checked_box_hard = CHECKBOX(self.screen, font_mid, white, 80, 540, 100, 90, "hard", "Data/images/unchecked_box.png")
+        self.checked_box_easy = CHECKBOX(self.screen, font_mid, white, 80, 300, 100, 90, "EASY", "Data/images/unchecked_box.png", lambda: self.checked_box_org())
+        self.checked_box_normal = CHECKBOX(self.screen, font_mid, white, 80, 420, 100, 90, "Normal", "Data/images/unchecked_box.png", lambda: self.checked_box_org())
+        self.checked_box_hard = CHECKBOX(self.screen, font_mid, white, 80, 540, 100, 90, "hard", "Data/images/unchecked_box.png", lambda: self.checked_box_org())
+        
         # game state
         self.game_set = False
         self.game_win = False
@@ -43,6 +44,7 @@ class MAIN():
         sys.exit()
 
     def checked_box_org(self):
+        print("a")
         if self.easy:
             self.normal = False
             self.hard = False
@@ -64,6 +66,9 @@ class MAIN():
             self.screen.blit(self.name_aff, (380, 120))
             # checkbox
             self.checked_box_org()
+            print("easy", self.easy)
+            print("normal", self.normal)
+            print("hard", self.hard)
             self.checked_box_easy.draw_button(self.easy)
             self.checked_box_normal.draw_button(self.normal)
             self.checked_box_hard.draw_button(self.hard)
