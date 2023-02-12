@@ -25,7 +25,7 @@ class CHECKBOX:
             self.screen.blit(self.background, self.button_rect)
         self.screen.blit(self.text_button, (self.x + 120, self.y + (self.height // 2) - (self.text_button.get_height() // 2) - 3))
     
-    def is_clicked(self, state, pos):
+    def is_clicked(self, pos):
         if self.button_rect.collidepoint(pos):
             self.command()
             
